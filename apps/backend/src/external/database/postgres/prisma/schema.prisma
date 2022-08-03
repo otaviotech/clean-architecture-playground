@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id        String   @id @default(uuid())
+  username  String
+  email     String
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  followers Follow[] @relation("follower")
+  following Follow[] @relation("followed")
+}
+
+model Follow {
+  id         String  @id @default(uuid())
+  follower   Profile @relation("follower", fields: [followerId], references: [id])
+  followerId String
+  followed   Profile @relation("followed", fields: [followedId], references: [id])
+  followedId String
+}

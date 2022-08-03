@@ -1,0 +1,24 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../dist/out-tsc",
+    "module": "commonjs",
+    "types": ["node"],
+    "paths": {
+      "@shared/*": ["apps/backend/src/shared/*"],
+      "@domain/*": ["apps/backend/src/domain/*"],
+      "@application/*": ["apps/backend/src/application/*"],
+      "@infra/*": ["apps/backend/src/infra/*"],
+      "@external/*": ["apps/backend/src/external/*"],
+      "@main/*": ["apps/backend/src/main/*"],
+      "@test/*": ["apps/backend/test/*"]
+    }
+  },
+  "exclude": [
+    "jest.config.ts",
+    "jest.config.e2e.ts",
+    "**/*.spec.ts",
+    "**/*.test.ts"
+  ],
+  "include": ["**/*.ts"]
+}

@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  postgres:
+    container_name: cap_backend_pg
+    image: postgres
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: cap
+      POSTGRES_PASSWORD: cap
+      POSTGRES_DB: cap
