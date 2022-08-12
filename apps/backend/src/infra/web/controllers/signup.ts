@@ -3,7 +3,6 @@ import { isLeft } from 'fp-ts/Either';
 // Infra (self)
 import { HttpController, HttpRequest, HttpResponse } from '@infra/ports';
 import {
-  buildApplicationErrorResponse,
   buildOkResponse,
   buildValidationFailedResponse,
 } from '@infra/web/shared';
@@ -29,7 +28,7 @@ export class SignUpController implements HttpController {
     const result = await this.signUpUseCase.execute(inputOrError.right);
 
     if (isLeft(result)) {
-      return buildApplicationErrorResponse(result.left);
+      return buildValidationFailedResponse([result.left]);
     }
 
     return buildOkResponse(this.presenter.render(result.right));

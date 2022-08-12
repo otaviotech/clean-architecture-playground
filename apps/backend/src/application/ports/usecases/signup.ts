@@ -11,7 +11,10 @@ export type SignUpUseCaseInput = {
   password: string;
 };
 
-export type SignUpError = EmailAlreadyTakenError | UsernameAlreadyTakenError;
+export type SignUpError =
+  | Error
+  | EmailAlreadyTakenError
+  | UsernameAlreadyTakenError;
 
 export type SignUpUseCaseOutputBoundary = {
   id: string;

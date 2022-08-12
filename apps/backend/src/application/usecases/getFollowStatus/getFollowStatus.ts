@@ -23,8 +23,8 @@ export class GetFollowStatusUseCase implements IGetFollowStatusUseCase {
     const { followerId, followedId } = input;
 
     const data = await this.getFollowStatusRepository.execute({
-      follower: { id: followerId },
-      followed: { id: followedId },
+      followerId,
+      followedId,
     });
 
     return this.mapResult(data);

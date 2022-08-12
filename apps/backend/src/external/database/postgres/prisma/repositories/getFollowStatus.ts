@@ -18,23 +18,20 @@ export class PrismaGetFollowStatusRepository
       where: {
         OR: [
           {
-            followedId: input.followed.id,
-            followerId: input.follower.id,
+            followedId: input.followedId,
+            followerId: input.followerId,
           },
           {
-            followedId: input.follower.id,
-            followerId: input.followed.id,
+            followedId: input.followerId,
+            followerId: input.followedId,
           },
         ],
       },
     });
 
-    const isFollowing = data.some((f) => input.follower.id === f.followerId);
-    const isFollowed = data.some((f) => input.follower.id === f.followedId);
+    const isFollowing = data.some((f) => input.followerId === f.followerId);
+    const isFollowed = data.some((f) => input.followerId === f.followedId);
 
-    return {
-      isFollowed,
-      isFollowing,
-    };
+    return { isFollowed, isFollowing };
   }
 }

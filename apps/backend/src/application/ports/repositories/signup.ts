@@ -1,5 +1,4 @@
 import { AsyncCommand } from '@shared/protocols';
-import { Profile } from '@domain/entities';
 
 export type SignUpRepositoryInput = {
   username: string;
@@ -7,7 +6,12 @@ export type SignUpRepositoryInput = {
   password: string;
 };
 
-export type SignUpRepositoryOutput = Profile;
+export type SignUpRepositoryOutput = {
+  id: string;
+  username: string;
+  email: string;
+  password: string;
+};
 
 export type ISignUpRepository = AsyncCommand<
   SignUpRepositoryInput,

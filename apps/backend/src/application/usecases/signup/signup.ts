@@ -1,13 +1,16 @@
-import { Profile } from '@domain/entities';
+import { isLeft, isRight, left, right } from 'fp-ts/Either';
 import { UsernameAlreadyTakenError } from '@application/errors';
-import { ISignUpRepository } from '@application/ports/repositories';
+import {
+  ISignUpRepository,
+  SignUpRepositoryOutput,
+} from '@application/ports/repositories';
 import {
   IFindProfileByUsernameUseCase,
   ISignUpUseCase,
   SignUpUseCaseInput,
   SignUpUseCaseOutput,
 } from '@application/ports/usecases';
-import { isRight, left, right } from 'fp-ts/Either';
+import { Profile } from '@domain/entities';
 
 export class SignUpUseCase implements ISignUpUseCase {
   constructor(
@@ -16,22 +19,34 @@ export class SignUpUseCase implements ISignUpUseCase {
   ) {}
 
   async execute(input: SignUpUseCaseInput): Promise<SignUpUseCaseOutput> {
+    const profileOrError = Profile.create({
+      email: input.email,
+      password: input.password,
+      username: input.username,
+    });
+
+    if (isLeft(profileOrError)) {
+      return left(profileOrError.left);
+    }
+
+    const profile = profileOrError.right;
+
     const alreadyExists = await this.alreadyExists(input.username);
 
     if (alreadyExists) {
       return left(new UsernameAlreadyTakenError(input.username));
     }
 
-    const profile = await this.signUpRepository.execute({
-      email: input.email,
-      username: input.username,
-      password: input.password,
+    const repoDto = await this.signUpRepository.execute({
+      email: profile.email.value,
+      username: profile.username,
+      password: profile.password,
     });
 
-    return this.mapResult(profile);
+    return this.mapResult(repoDto);
   }
 
-  private mapResult(profile: Profile): SignUpUseCaseOutput {
+  private mapResult(profile: SignUpRepositoryOutput): SignUpUseCaseOutput {
     return right({
       id: profile.id,
       username: profile.username,

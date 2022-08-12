@@ -1,10 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Profile as PrismaProfile } from '@prisma/client';
 import {
   SignUpRepositoryInput,
   SignUpRepositoryOutput,
   ISignUpRepository,
 } from '@application/ports/repositories';
-import { PrismaProfileMapper } from '../mappers/entities/profile';
 
 export class PrismaSignUpRepository implements ISignUpRepository {
   constructor(private prismaClient: PrismaClient) {}
@@ -13,13 +12,18 @@ export class PrismaSignUpRepository implements ISignUpRepository {
     const { username, email, password } = input;
 
     const ormProfile = await this.prismaClient.profile.create({
-      data: {
-        username,
-        password,
-        email,
-      },
+      data: { username, password, email },
     });
 
-    return PrismaProfileMapper.toDomain(ormProfile);
+    return this.mapResult(ormProfile);
+  }
+
+  private mapResult(profile: PrismaProfile): SignUpRepositoryOutput {
+    return {
+      id: profile.id,
+      username: profile.username,
+      email: profile.email,
+      password: profile.password,
+    };
   }
 }

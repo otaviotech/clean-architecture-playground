@@ -1,10 +1,9 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Profile as PrismaProfile } from '@prisma/client';
 import {
   FindProfileByUsernameRepositoryInput,
   FindProfileByUsernameRepositoryOutput,
   IFindProfileByUsernameRepository,
 } from '@application/ports/repositories';
-import { PrismaProfileMapper } from '../mappers/entities/profile';
 
 export class PrismaFindProfileByUsernameRepository
   implements IFindProfileByUsernameRepository
@@ -22,6 +21,17 @@ export class PrismaFindProfileByUsernameRepository
       return null;
     }
 
-    return PrismaProfileMapper.toDomain(ormProfile);
+    return this.mapResult(ormProfile);
+  }
+
+  private mapResult(
+    profile: PrismaProfile
+  ): FindProfileByUsernameRepositoryOutput {
+    return {
+      id: profile.id,
+      username: profile.username,
+      email: profile.email,
+      password: profile.password,
+    };
   }
 }

@@ -37,10 +37,6 @@ export class FindProfileByUsernameUseCase
       username: data.username,
       email: data.email,
       password: data.password,
-      followers: [],
-      following: [],
-      createdAt: data.createdAt,
-      updatedAt: data.updatedAt,
     };
   }
 }

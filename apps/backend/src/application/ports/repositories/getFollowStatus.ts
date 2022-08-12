@@ -1,9 +1,8 @@
 import { AsyncCommand } from '@shared/protocols';
-import { Profile } from '@domain/entities';
 
 export type GetFollowStatusRepositoryInput = {
-  follower: Pick<Profile, 'id'>;
-  followed: Pick<Profile, 'id'>;
+  followerId: string;
+  followedId: string;
 };
 
 export type GetFollowStatusRepositoryOutput = {
