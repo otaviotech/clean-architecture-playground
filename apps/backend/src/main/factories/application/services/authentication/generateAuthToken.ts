@@ -1,5 +1,5 @@
-import { IGenerateAuthTokenService } from '@application/ports/services/authentication';
-import { JwtAuthTokenGenerator } from '@external/authentication/jwt/jwtAuthTokenGenerator';
+import { IGenerateAuthTokenService } from '@application/ports/services';
+import { JwtAuthTokenGenerator } from '@external/authentication/jwt';
 import { GenerateAuthTokenService } from '@infra/authentication/services';
 import { buildConfigManager } from '@main/factories/infra/config';
 

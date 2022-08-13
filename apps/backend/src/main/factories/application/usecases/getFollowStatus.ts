@@ -1,8 +1,16 @@
 import { IGetFollowStatusUseCase } from '@application/ports/usecases';
 import { GetFollowStatusUseCase } from '@application/usecases';
-import { buildGetFollowStatusRepository } from '../repositories';
+import {
+  buildGetFollowStatusRepository,
+  buildProfileExistsByIdRepository,
+} from '../repositories';
 
 export const buildGetFollowStatusUseCase = (): IGetFollowStatusUseCase => {
   const getFollowStatusRepository = buildGetFollowStatusRepository();
-  return new GetFollowStatusUseCase(getFollowStatusRepository);
+  const profileExistsByIdRepository = buildProfileExistsByIdRepository();
+
+  return new GetFollowStatusUseCase(
+    getFollowStatusRepository,
+    profileExistsByIdRepository
+  );
 };

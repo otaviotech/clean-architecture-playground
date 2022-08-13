@@ -1,16 +1,23 @@
 import { isLeft, left, right } from 'fp-ts/Either';
-import { AlreadyFollowingError } from '@application/errors';
+import {
+  AlreadyFollowingError,
+  ResourceNotFoundError,
+} from '@application/errors';
 import {
   IFollowUseCase,
   FollowUseCaseInput,
   FollowUseCaseOutput,
   IGetFollowStatusUseCase,
 } from '@application/ports/usecases';
-import { IFollowRepository } from '@application/ports/repositories';
+import {
+  IFollowRepository,
+  IProfileExistsByIdRepository,
+} from '@application/ports/repositories';
 
 export class FollowUseCase implements IFollowUseCase {
   constructor(
     private readonly getFollowStatusUseCase: IGetFollowStatusUseCase,
+    private readonly profileExistsByIdRepository: IProfileExistsByIdRepository,
     private readonly followRepository: IFollowRepository
   ) {}
 
@@ -18,6 +25,15 @@ export class FollowUseCase implements IFollowUseCase {
     input: FollowUseCaseInput
   ): Promise<FollowUseCaseOutput> {
     const { followerId, followedId } = input;
+
+    const bothProfileExists = await this.bothProfileExists(
+      followerId,
+      followedId
+    );
+
+    if (!bothProfileExists) {
+      return left(new ResourceNotFoundError('profile', followedId));
+    }
 
     const data = await this.getFollowStatusUseCase.execute({
       followerId,
@@ -37,5 +53,17 @@ export class FollowUseCase implements IFollowUseCase {
     await this.followRepository.execute({ followerId, followedId });
 
     return right(undefined);
+  }
+
+  private async bothProfileExists(
+    followerId: string,
+    followedId: string
+  ): Promise<boolean> {
+    const exists = await this.profileExistsByIdRepository.execute([
+      followerId,
+      followedId,
+    ]);
+
+    return exists[followerId] && exists[followedId];
   }
 }

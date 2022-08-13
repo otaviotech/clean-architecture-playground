@@ -9,12 +9,21 @@ import { FollowUseCase } from './follow';
 
 // Stubs
 import { GetFollowStatusUseCaseStub } from '@test/stubs/application/usecases';
-import { FollowRepositoryStub } from '@test/stubs/application/repositories';
+import {
+  FollowRepositoryStub,
+  ProfileExistsByIdRepositoryStub,
+} from '@test/stubs/application/repositories';
 
 const makeSut = () => {
   const getFollowStatusUseCase = new GetFollowStatusUseCaseStub();
   const followRepository = new FollowRepositoryStub();
-  const sut = new FollowUseCase(getFollowStatusUseCase, followRepository);
+  const profileExistsByIdRepository = new ProfileExistsByIdRepositoryStub();
+
+  const sut = new FollowUseCase(
+    getFollowStatusUseCase,
+    profileExistsByIdRepository,
+    followRepository
+  );
 
   return {
     sut,

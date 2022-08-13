@@ -1,8 +1,9 @@
 import { IComparePasswordHashService } from '@application/ports/services';
-import { PasswordHashComparer } from '@infra/cryptography/hashComparer';
+import { ComparePasswordHashService } from '@infra/cryptography';
 import { BcryptPasswordHashComparer } from '@external/cryptography';
 
 export const buildComparePasswordHashService =
   (): IComparePasswordHashService => {
-    return new PasswordHashComparer(new BcryptPasswordHashComparer());
+    const adapter = new BcryptPasswordHashComparer();
+    return new ComparePasswordHashService(adapter);
   };

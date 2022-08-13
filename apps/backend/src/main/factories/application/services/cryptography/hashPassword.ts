@@ -1,8 +1,8 @@
 import { IHashPasswordService } from '@application/ports/services';
-import { BcryptHasher } from '@external/cryptography/bcryptHasher';
-import { Hasher } from '@infra/cryptography/hasher';
+import { BcryptHasher } from '@external/cryptography';
+import { HashPasswordService } from '@infra/cryptography';
 
 export const buildHashPasswordService = (): IHashPasswordService => {
   const adapter = new BcryptHasher();
-  return new Hasher(adapter);
+  return new HashPasswordService(adapter);
 };

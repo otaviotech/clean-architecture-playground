@@ -16,6 +16,7 @@ export class ExpressRouteAdapter {
         method: req.method,
         params: req.params,
         query: req.query,
+        headers: req.headers,
         body: req.body,
       };
 

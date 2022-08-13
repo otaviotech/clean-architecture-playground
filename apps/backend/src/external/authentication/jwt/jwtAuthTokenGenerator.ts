@@ -7,6 +7,6 @@ import {
 
 export class JwtAuthTokenGenerator implements IAuthTokenGenerator {
   async generate(input: IAuthTokenGeneratorInput): Promise<string> {
-    return jwt.sign(input.payload, input.secret, { expiresIn: '1h' });
+    return jwt.sign(input.payload, input.secret, { expiresIn: input.ttl });
   }
 }

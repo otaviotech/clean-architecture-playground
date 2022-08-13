@@ -4,10 +4,12 @@ import express, { Express } from 'express';
 import { HttpServerRoute, HttpServer, HttpServerConfig } from '@infra/ports';
 import { ExpressRouteAdapter } from '@external/web/express/adapters';
 import { PinoLogger } from '@external/logger/pino/adapters/logger';
+import { ExpressMiddlewareAdapter } from './middleware';
 
 export class ExpressServer implements HttpServer {
   private logger = new PinoLogger();
   private routeAdapter = new ExpressRouteAdapter(this.logger);
+  private middlewrareAdapter = new ExpressMiddlewareAdapter();
   private server: Server;
 
   constructor(private app: Express) {
@@ -17,8 +19,14 @@ export class ExpressServer implements HttpServer {
 
   registerRoutes(routes: HttpServerRoute[]): void {
     routes.forEach((route) => {
+      const routeMiddlewares =
+        route.middlewares?.map((middleware) =>
+          this.middlewrareAdapter.adapt(middleware)
+        ) ?? [];
+
       this.app[route.method.toLowerCase()](
         route.path,
+        ...routeMiddlewares,
         this.routeAdapter.adapt(route.handler)
       );
     });

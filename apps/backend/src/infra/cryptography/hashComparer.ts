@@ -3,9 +3,9 @@ import {
   ComparePasswordHashServiceInput,
 } from '@application/ports/services';
 
-import { IHashComparer } from '@infra/cryptography/ports/hashComparer';
+import { IHashComparer } from '@infra/cryptography/ports';
 
-export class PasswordHashComparer implements IComparePasswordHashService {
+export class ComparePasswordHashService implements IComparePasswordHashService {
   constructor(private readonly hashComparer: IHashComparer) {}
 
   async execute(input: ComparePasswordHashServiceInput): Promise<boolean> {

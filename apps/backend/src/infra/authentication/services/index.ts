@@ -1,1 +1,1 @@
-export * from './generateAuthToken';
+export * from './authentication';

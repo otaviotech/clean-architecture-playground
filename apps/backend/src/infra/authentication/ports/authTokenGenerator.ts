@@ -1,5 +1,6 @@
 export type IAuthTokenGeneratorInput = {
   payload: { [key: string]: unknown };
+  ttl: string;
   secret: string;
 };
 

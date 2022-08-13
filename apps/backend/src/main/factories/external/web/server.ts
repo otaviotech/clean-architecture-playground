@@ -1,4 +1,5 @@
 import express from 'express';
+import 'express-async-errors';
 import { HttpServer } from '@infra/ports';
 import { buildWebServerRoutes } from './routes';
 import { ExpressServer } from '@external/web/express/adapters';
