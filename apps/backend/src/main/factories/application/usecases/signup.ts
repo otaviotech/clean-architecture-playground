@@ -1,11 +1,18 @@
+import { ISignUpUseCase } from '@application/ports/usecases';
 import { SignUpUseCase } from '@application/usecases';
 
-import { buildFindProfileByUsernameUseCase } from './findProfileByUsername';
+import { buildFindProfileByUsernameUseCase } from '@main/factories/application/usecases';
 import { buildSignUpRepository } from '@main/factories/application/repositories';
-import { ISignUpUseCase } from '@application/ports/usecases';
+import { buildHashPasswordService } from '@main/factories/application/services/cryptography';
 
 export const buildSignUpUseCase = (): ISignUpUseCase => {
   const findProfileByUsernameUseCase = buildFindProfileByUsernameUseCase();
   const signUpRepository = buildSignUpRepository();
-  return new SignUpUseCase(signUpRepository, findProfileByUsernameUseCase);
+  const hashPasswordService = buildHashPasswordService();
+
+  return new SignUpUseCase(
+    signUpRepository,
+    findProfileByUsernameUseCase,
+    hashPasswordService
+  );
 };

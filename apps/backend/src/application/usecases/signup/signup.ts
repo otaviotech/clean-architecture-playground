@@ -10,12 +10,14 @@ import {
   SignUpUseCaseInput,
   SignUpUseCaseOutput,
 } from '@application/ports/usecases';
+import { IHashPasswordService } from '@application/ports/services';
 import { Profile } from '@domain/entities';
 
 export class SignUpUseCase implements ISignUpUseCase {
   constructor(
     private readonly signUpRepository: ISignUpRepository,
-    private readonly findProfileByUsernameUseCase: IFindProfileByUsernameUseCase
+    private readonly findProfileByUsernameUseCase: IFindProfileByUsernameUseCase,
+    private readonly hashPasswordService: IHashPasswordService
   ) {}
 
   async execute(input: SignUpUseCaseInput): Promise<SignUpUseCaseOutput> {
@@ -37,10 +39,12 @@ export class SignUpUseCase implements ISignUpUseCase {
       return left(new UsernameAlreadyTakenError(input.username));
     }
 
+    const passwordHash = await this.hashPasswordService.execute(input.password);
+
     const repoDto = await this.signUpRepository.execute({
       email: profile.email.value,
-      username: profile.username,
-      password: profile.password,
+      username: profile.username.value,
+      password: passwordHash,
     });
 
     return this.mapResult(repoDto);

@@ -1,4 +1,3 @@
-import { v4 as uuid } from 'uuid';
 import { Either, left, right } from 'fp-ts/lib/Either';
 import Joi from 'joi';
 import { ValueObject, ValueObjectProps } from '@domain/shared';
@@ -8,10 +7,6 @@ export interface UniqueEntityIDProps extends ValueObjectProps {
 }
 
 export class UniqueEntityID extends ValueObject<UniqueEntityIDProps> {
-  constructor(id?: string) {
-    super({ value: id ?? uuid() });
-  }
-
   public get value(): string {
     return this.props.value;
   }
@@ -25,6 +20,6 @@ export class UniqueEntityID extends ValueObject<UniqueEntityIDProps> {
       return left(new Error('UniqueEntityID is not valid'));
     }
 
-    return right(new UniqueEntityID(props.value));
+    return right(new UniqueEntityID({ value: props.value }));
   }
 }

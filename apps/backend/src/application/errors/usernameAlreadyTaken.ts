@@ -4,7 +4,7 @@ export class UsernameAlreadyTakenError extends Error {
   };
 
   constructor(username: string) {
-    super(`Username is "${username}" already taken`);
+    super(`username "${username}" already taken`);
 
     this.name = 'UsernameAlreadyTakenError';
     this.data = { username };

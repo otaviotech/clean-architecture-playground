@@ -10,7 +10,7 @@ export abstract class Entity<T> {
   protected props: T;
 
   constructor(props: T, id?: UniqueEntityID) {
-    this._id = id ? id : new UniqueEntityID(uuid());
+    this._id = id ? id : new UniqueEntityID({ value: uuid() });
     this.props = props;
   }
 

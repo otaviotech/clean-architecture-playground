@@ -1,5 +1,5 @@
 import { Entity } from '@domain/shared';
-import { Email, UniqueEntityID } from '@domain/valueObjects';
+import { Email, UniqueEntityID, Username } from '@domain/valueObjects';
 import { Either, isLeft, left, right } from 'fp-ts/lib/Either';
 
 export interface ProfilePlainProps {
@@ -11,7 +11,7 @@ export interface ProfilePlainProps {
 
 export interface ProfileProps {
   id?: UniqueEntityID;
-  username: string;
+  username: Username;
   email: Email;
   password: string;
 }
@@ -21,7 +21,7 @@ export class Profile extends Entity<ProfileProps> {
     return this.props.email;
   }
 
-  get username(): string {
+  get username(): Username {
     return this.props.username;
   }
 
@@ -44,9 +44,15 @@ export class Profile extends Entity<ProfileProps> {
       return left(email.left);
     }
 
+    const username = Username.create(props.username);
+
+    if (isLeft(username)) {
+      return left(username.left);
+    }
+
     const profile = new Profile({
       id: id.right,
-      username: props.username,
+      username: username.right,
       email: email.right,
       password: props.password,
     });
