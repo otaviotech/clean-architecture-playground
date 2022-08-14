@@ -9,11 +9,14 @@ import {
   FindProfileByUsernameUseCaseOutput,
   FindProfileByUsernameUseCaseOutputBoundary,
 } from '@application/ports/usecases';
+import { inject, singleton } from 'tsyringe';
 
+@singleton()
 export class FindProfileByUsernameUseCase
   implements IFindProfileByUsernameUseCase
 {
   constructor(
+    @inject('IFindProfileByUsernameRepository')
     private readonly findProfileByUsernameRepository: IFindProfileByUsernameRepository
   ) {}
 

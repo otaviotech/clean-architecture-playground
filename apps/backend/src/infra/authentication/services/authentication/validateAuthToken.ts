@@ -1,10 +1,14 @@
+import { inject, singleton } from 'tsyringe';
 import { IValidateAuthTokenService } from '@application/ports/services';
 import { IAuthTokenValidator } from '@infra/authentication/ports';
 import { IConfigManager } from '@infra/config/ports';
 
+@singleton()
 export class ValidateAuthTokenService implements IValidateAuthTokenService {
   constructor(
+    @inject('IAuthTokenValidator')
     private readonly authTokenValidator: IAuthTokenValidator,
+    @inject('IConfigManager')
     private readonly configManager: IConfigManager
   ) {}
 

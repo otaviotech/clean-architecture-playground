@@ -1,4 +1,5 @@
 import { isLeft } from 'fp-ts/Either';
+import { inject, singleton } from 'tsyringe';
 
 // Infra (self)
 import { HttpController, HttpRequest, HttpResponse } from '@infra/ports';
@@ -12,11 +13,14 @@ import { SignUpPresenter } from '@infra/web/presenters/signup';
 import { ISignUpUseCase } from '@application/ports/usecases';
 import { SignUpInputBuilder } from '@application/usecases/signup/signupInputBuilder';
 
+@singleton()
 export class SignUpController implements HttpController {
   private readonly inputValidator = new SignUpInputBuilder();
   private readonly presenter = new SignUpPresenter();
 
-  constructor(private readonly signUpUseCase: ISignUpUseCase) {}
+  constructor(
+    @inject('ISignUpUseCase') private readonly signUpUseCase: ISignUpUseCase
+  ) {}
 
   async handle(input: HttpRequest): Promise<HttpResponse> {
     const inputOrError = this.inputValidator.build(input.body as never);

@@ -1,4 +1,5 @@
 import { isLeft } from 'fp-ts/Either';
+import { inject, singleton } from 'tsyringe';
 
 // Infra (self)
 import { HttpController, HttpRequest, HttpResponse } from '@infra/ports';
@@ -12,10 +13,13 @@ import {
   buildValidationFailedResponse,
 } from '../shared';
 
+@singleton()
 export class FollowController implements HttpController {
   private readonly inputValidator = new FollowInputBuilder();
 
-  constructor(private readonly followUseCase: IFollowUseCase) {}
+  constructor(
+    @inject('IFollowUseCase') private readonly followUseCase: IFollowUseCase
+  ) {}
 
   async handle(input: HttpRequest): Promise<HttpResponse> {
     const inputOrError = this.inputValidator.build(input.query as never);

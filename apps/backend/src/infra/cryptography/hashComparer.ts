@@ -1,3 +1,4 @@
+import { inject, singleton } from 'tsyringe';
 import {
   IComparePasswordHashService,
   ComparePasswordHashServiceInput,
@@ -5,8 +6,11 @@ import {
 
 import { IHashComparer } from '@infra/cryptography/ports';
 
+@singleton()
 export class ComparePasswordHashService implements IComparePasswordHashService {
-  constructor(private readonly hashComparer: IHashComparer) {}
+  constructor(
+    @inject('IHashComparer') private readonly hashComparer: IHashComparer
+  ) {}
 
   async execute(input: ComparePasswordHashServiceInput): Promise<boolean> {
     return this.hashComparer.compare(input.plain, input.hashed);

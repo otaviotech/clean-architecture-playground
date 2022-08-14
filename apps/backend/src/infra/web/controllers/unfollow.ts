@@ -1,4 +1,5 @@
 import { isLeft } from 'fp-ts/Either';
+import { inject, singleton } from 'tsyringe';
 
 // Infra (self)
 import { HttpController, HttpRequest, HttpResponse } from '@infra/ports';
@@ -12,10 +13,14 @@ import {
 import { IUnfollowUseCase } from '@application/ports/usecases';
 import { UnfollowInputBuilder } from '@application/usecases/unfollow/unfollowInputBuilder';
 
+@singleton()
 export class UnfollowController implements HttpController {
   private readonly inputValidator = new UnfollowInputBuilder();
 
-  constructor(private readonly unfollowUseCase: IUnfollowUseCase) {}
+  constructor(
+    @inject('IUnfollowUseCase')
+    private readonly unfollowUseCase: IUnfollowUseCase
+  ) {}
 
   async handle(input: HttpRequest): Promise<HttpResponse> {
     const inputOrError = this.inputValidator.build(input.body as never);

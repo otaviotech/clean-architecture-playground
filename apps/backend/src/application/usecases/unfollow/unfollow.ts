@@ -9,10 +9,15 @@ import {
 } from '@application/ports/usecases';
 import { NotFollowingError } from '@application/errors';
 import { IUnfollowRepository } from '@application/ports/repositories';
+import { inject, singleton } from 'tsyringe';
 
+@singleton()
 export class UnfollowUseCase implements IUnfollowUseCase {
   constructor(
+    @inject('IGetFollowStatusUseCase')
     private readonly getFollowStatusUseCase: IGetFollowStatusUseCase,
+
+    @inject('IUnfollowRepository')
     private readonly unfollowRepository: IUnfollowRepository
   ) {}
 

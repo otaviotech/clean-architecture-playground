@@ -1,4 +1,5 @@
 import { isLeft, isRight, left, right } from 'fp-ts/Either';
+import { inject, singleton } from 'tsyringe';
 import { UsernameAlreadyTakenError } from '@application/errors';
 import {
   ISignUpRepository,
@@ -13,10 +14,16 @@ import {
 import { IHashPasswordService } from '@application/ports/services';
 import { Profile } from '@domain/entities';
 
+@singleton()
 export class SignUpUseCase implements ISignUpUseCase {
   constructor(
+    @inject('ISignUpRepository')
     private readonly signUpRepository: ISignUpRepository,
+
+    @inject('IFindProfileByUsernameUseCase')
     private readonly findProfileByUsernameUseCase: IFindProfileByUsernameUseCase,
+
+    @inject('IHashPasswordService')
     private readonly hashPasswordService: IHashPasswordService
   ) {}
 

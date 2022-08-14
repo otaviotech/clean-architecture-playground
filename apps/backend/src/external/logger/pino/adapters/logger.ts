@@ -1,9 +1,9 @@
 import pino from 'pino';
-import { Logger } from '@infra/ports';
+import { ILogger } from '@infra/ports';
 
 const prettyLog = process.env.PRETTY_LOGS === 'true';
 
-export class PinoLogger implements Logger {
+export class PinoLogger implements ILogger {
   public logger = pino({
     transport: prettyLog ? { target: 'pino-pretty' } : undefined,
   });

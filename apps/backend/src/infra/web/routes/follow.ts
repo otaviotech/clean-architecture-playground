@@ -1,13 +1,20 @@
-import { HttpController, HttpMiddleware, HttpServerRoute } from '@infra/ports';
+import { inject, singleton } from 'tsyringe';
+import { HttpController, HttpMiddleware } from '@infra/ports';
+import { Route } from '../shared';
 
-export const buildFollowRoute = (
-  controller: HttpController,
-  middlewares?: HttpMiddleware[]
-): HttpServerRoute => {
-  return {
-    method: 'POST',
-    path: '/v1/profile/follow',
-    handler: controller,
-    middlewares,
-  };
-};
+@singleton()
+export class FollowRoute extends Route {
+  constructor(
+    @inject('FollowController')
+    controller: HttpController,
+    @inject('RequireAuthenticationMiddleware')
+    requireAuthenticationMiddleware: HttpMiddleware
+  ) {
+    super({
+      method: 'POST',
+      path: '/v1/profile/follow',
+      handler: controller,
+      middlewares: [requireAuthenticationMiddleware],
+    });
+  }
+}

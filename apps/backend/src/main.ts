@@ -1,6 +1,10 @@
-import { buildWebServer } from './main/factories/external/web';
+import 'reflect-metadata';
 
-const server = buildWebServer();
+import { appContainer } from './main/ioc/container';
+
+import { HttpServer } from './infra/ports';
+
+const server = appContainer.resolve<HttpServer>('ExpressServer');
 
 server.listen({ port: 3000 });
 

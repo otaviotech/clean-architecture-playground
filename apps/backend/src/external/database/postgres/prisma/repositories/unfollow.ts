@@ -1,3 +1,4 @@
+import { inject, singleton } from 'tsyringe';
 import { PrismaClient } from '@prisma/client';
 import {
   UnfollowRepositoryInput,
@@ -5,8 +6,9 @@ import {
   IUnfollowRepository,
 } from '@application/ports/repositories';
 
+@singleton()
 export class PrismaUnfollowRepository implements IUnfollowRepository {
-  constructor(private prismaClient: PrismaClient) {}
+  constructor(@inject('PrismaClient') private prismaClient: PrismaClient) {}
 
   async execute(
     input: UnfollowRepositoryInput

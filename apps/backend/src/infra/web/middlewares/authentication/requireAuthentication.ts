@@ -1,4 +1,5 @@
 import { Either, left, right } from 'fp-ts/lib/Either';
+import { inject, singleton } from 'tsyringe';
 
 import { IValidateAuthTokenService } from '@application/ports/services';
 import { InvalidCredentialsError } from '@application/errors';
@@ -6,8 +7,10 @@ import { InvalidCredentialsError } from '@application/errors';
 import { HttpRequest, HttpResponse, HttpMiddleware } from '@infra/ports';
 import { buildUnauthorizedResponse } from '@infra/web/shared';
 
+@singleton()
 export class RequireAuthenticationMiddleware implements HttpMiddleware {
   constructor(
+    @inject('IValidateAuthTokenService')
     private readonly validateAuthTokenService: IValidateAuthTokenService
   ) {}
 

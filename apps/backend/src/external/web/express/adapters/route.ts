@@ -3,10 +3,12 @@ import {
   Response as ExpressResponse,
 } from 'express';
 
-import { HttpController, HttpRequest, Logger } from '@infra/ports';
+import { HttpController, HttpRequest, ILogger } from '@infra/ports';
+import { inject, singleton } from 'tsyringe';
 
+@singleton()
 export class ExpressRouteAdapter {
-  constructor(private readonly logger: Logger) {}
+  constructor(@inject('ILogger') private readonly logger: ILogger) {}
 
   adapt(
     controller: HttpController

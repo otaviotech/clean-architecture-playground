@@ -5,11 +5,14 @@ import {
 
 import { IAuthTokenGenerator } from '@infra/authentication/ports';
 import { IConfigManager } from '@infra/config/ports';
+import { inject, singleton } from 'tsyringe';
 
+@singleton()
 export class GenerateAuthTokenService implements IGenerateAuthTokenService {
   constructor(
+    @inject('IAuthTokenGenerator')
     private readonly authTokenGenerator: IAuthTokenGenerator,
-    private readonly configManager: IConfigManager
+    @inject('IConfigManager') private readonly configManager: IConfigManager
   ) {}
 
   async execute(input: GenerateAuthTokenServiceInput): Promise<string> {

@@ -12,4 +12,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../../coverage/apps/backend',
+  setupFilesAfterEnv: ['<rootDir>/test/setup.ts'],
 };

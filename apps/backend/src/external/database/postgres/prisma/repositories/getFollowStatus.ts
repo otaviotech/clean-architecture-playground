@@ -1,3 +1,4 @@
+import { inject, singleton } from 'tsyringe';
 import { PrismaClient } from '@prisma/client';
 
 import {
@@ -6,10 +7,11 @@ import {
   IGetFollowStatusRepository,
 } from '@application/ports/repositories';
 
+@singleton()
 export class PrismaGetFollowStatusRepository
   implements IGetFollowStatusRepository
 {
-  constructor(private prismaClient: PrismaClient) {}
+  constructor(@inject('PrismaClient') private prismaClient: PrismaClient) {}
 
   async execute(
     input: GetFollowStatusRepositoryInput

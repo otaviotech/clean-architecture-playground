@@ -14,10 +14,15 @@ import {
   IProfileExistsByIdRepository,
 } from '@application/ports/repositories';
 import { ResourceNotFoundError } from '@application/errors';
+import { inject, singleton } from 'tsyringe';
 
+@singleton()
 export class GetFollowStatusUseCase implements IGetFollowStatusUseCase {
   constructor(
+    @inject('IGetFollowStatusRepository')
     private readonly getFollowStatusRepository: IGetFollowStatusRepository,
+
+    @inject('IProfileExistsByIdRepository')
     private readonly profileExistsByIdRepository: IProfileExistsByIdRepository
   ) {}
 

@@ -4,11 +4,13 @@ import {
   FindProfileByUsernameRepositoryOutput,
   IFindProfileByUsernameRepository,
 } from '@application/ports/repositories';
+import { inject, singleton } from 'tsyringe';
 
+@singleton()
 export class PrismaFindProfileByUsernameRepository
   implements IFindProfileByUsernameRepository
 {
-  constructor(private prismaClient: PrismaClient) {}
+  constructor(@inject('PrismaClient') private prismaClient: PrismaClient) {}
 
   async execute(
     input: FindProfileByUsernameRepositoryInput

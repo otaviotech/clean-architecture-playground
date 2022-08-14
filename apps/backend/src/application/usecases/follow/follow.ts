@@ -1,4 +1,5 @@
 import { isLeft, left, right } from 'fp-ts/Either';
+import { inject, singleton } from 'tsyringe';
 import {
   AlreadyFollowingError,
   ResourceNotFoundError,
@@ -14,10 +15,14 @@ import {
   IProfileExistsByIdRepository,
 } from '@application/ports/repositories';
 
+@singleton()
 export class FollowUseCase implements IFollowUseCase {
   constructor(
+    @inject('IGetFollowStatusUseCase')
     private readonly getFollowStatusUseCase: IGetFollowStatusUseCase,
+    @inject('IProfileExistsByIdRepository')
     private readonly profileExistsByIdRepository: IProfileExistsByIdRepository,
+    @inject('IFollowRepository')
     private readonly followRepository: IFollowRepository
   ) {}
 

@@ -1,4 +1,5 @@
 import { isLeft } from 'fp-ts/Either';
+import { inject, singleton } from 'tsyringe';
 
 // Infra (self)
 import { HttpController, HttpRequest, HttpResponse } from '@infra/ports';
@@ -13,11 +14,13 @@ import { GetFollowStatusPresenter } from '@infra/web/presenters/getFollowStatus'
 import { IGetFollowStatusUseCase } from '@application/ports/usecases';
 import { GetFollowStatusInputBuilder } from '@application/usecases';
 
+@singleton()
 export class GetFollowStatusController implements HttpController {
   private readonly inputValidator = new GetFollowStatusInputBuilder();
   private readonly presenter = new GetFollowStatusPresenter();
 
   constructor(
+    @inject('IGetFollowStatusUseCase')
     private readonly getFollowStatusUseCase: IGetFollowStatusUseCase
   ) {}
 

@@ -8,4 +8,5 @@ export interface HttpServer {
   listen(config: HttpServerConfig): Promise<void>;
   stop(): Promise<void>;
   registerRoutes(routes: HttpServerRoute[]): void;
+  printRoutes(): void;
 }

@@ -5,7 +5,9 @@ import {
   NextFunction as ExpressNextFunction,
 } from 'express';
 import { HttpMiddleware, HttpRequest, HttpResponse } from '@infra/ports';
+import { singleton } from 'tsyringe';
 
+@singleton()
 export class ExpressMiddlewareAdapter {
   adapt(middleware: HttpMiddleware) {
     return async (

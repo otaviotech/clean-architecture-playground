@@ -1,27 +1,47 @@
+import Table from 'cli-table';
 import { Server } from 'http';
 import pino from 'pino-http';
 import express, { Express } from 'express';
-import { HttpServerRoute, HttpServer, HttpServerConfig } from '@infra/ports';
+import {
+  HttpServerRoute,
+  HttpServer,
+  HttpServerConfig,
+  ILogger,
+} from '@infra/ports';
 import { ExpressRouteAdapter } from '@external/web/express/adapters';
-import { PinoLogger } from '@external/logger/pino/adapters/logger';
 import { ExpressMiddlewareAdapter } from './middleware';
+import { inject, singleton } from 'tsyringe';
 
+@singleton()
 export class ExpressServer implements HttpServer {
-  private logger = new PinoLogger();
-  private routeAdapter = new ExpressRouteAdapter(this.logger);
-  private middlewrareAdapter = new ExpressMiddlewareAdapter();
   private server: Server;
 
-  constructor(private app: Express) {
+  constructor(
+    @inject('express')
+    private readonly app: Express,
+
+    @inject('ILogger')
+    private readonly logger: ILogger,
+
+    @inject('ExpressRouteAdapter')
+    private readonly routeAdapter: ExpressRouteAdapter,
+
+    @inject('ExpressMiddlewareAdapter')
+    private readonly middlewareAdapter: ExpressMiddlewareAdapter,
+
+    @inject('APP_ROUTES')
+    private readonly routes: HttpServerRoute[]
+  ) {
     app.use(express.json());
     app.use(pino({ logger: this.logger.logger }));
+    this.registerRoutes(routes);
   }
 
   registerRoutes(routes: HttpServerRoute[]): void {
     routes.forEach((route) => {
       const routeMiddlewares =
         route.middlewares?.map((middleware) =>
-          this.middlewrareAdapter.adapt(middleware)
+          this.middlewareAdapter.adapt(middleware)
         ) ?? [];
 
       this.app[route.method.toLowerCase()](
@@ -52,5 +72,16 @@ export class ExpressServer implements HttpServer {
         resolve();
       });
     });
+  }
+
+  public printRoutes(): void {
+    const table = new Table({
+      head: ['Method', 'Path', 'Description'],
+    });
+    this.routes.forEach((route) => {
+      table.push([route.method, route.path, '.']);
+    });
+
+    this.logger.info(table.toString());
   }
 }

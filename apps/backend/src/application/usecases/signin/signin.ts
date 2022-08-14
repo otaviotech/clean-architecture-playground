@@ -1,4 +1,5 @@
 import { isLeft, left, right } from 'fp-ts/lib/Either';
+import { inject, singleton } from 'tsyringe';
 import {
   IFindProfileByUsernameUseCase,
   ISignInUseCase,
@@ -10,10 +11,16 @@ import { IComparePasswordHashService } from '@application/ports/services';
 import { InvalidCredentialsError } from '@application/errors';
 import { IGenerateAuthTokenService } from '@application/ports/services/authentication';
 
+@singleton()
 export class SignInUseCase implements ISignInUseCase {
   constructor(
+    @inject('IFindProfileByUsernameUseCase')
     private readonly findProfileByUsernameUseCase: IFindProfileByUsernameUseCase,
+
+    @inject('IComparePasswordHashService')
     private readonly comparePasswordHashService: IComparePasswordHashService,
+
+    @inject('IGenerateAuthTokenService')
     private readonly generateAuthTokenService: IGenerateAuthTokenService
   ) {}
 

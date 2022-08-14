@@ -1,3 +1,4 @@
+import { inject, singleton } from 'tsyringe';
 import { PrismaClient } from '@prisma/client';
 import {
   FollowRepositoryInput,
@@ -5,8 +6,9 @@ import {
   IFollowRepository,
 } from '@application/ports/repositories';
 
+@singleton()
 export class PrismaFollowRepository implements IFollowRepository {
-  constructor(private prismaClient: PrismaClient) {}
+  constructor(@inject('PrismaClient') private prismaClient: PrismaClient) {}
 
   async execute(input: FollowRepositoryInput): Promise<FollowRepositoryOutput> {
     await this.prismaClient.follow.create({

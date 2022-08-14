@@ -1,3 +1,4 @@
+import { inject, singleton } from 'tsyringe';
 import { PrismaClient, Profile as PrismaProfile } from '@prisma/client';
 import {
   SignUpRepositoryInput,
@@ -5,8 +6,9 @@ import {
   ISignUpRepository,
 } from '@application/ports/repositories';
 
+@singleton()
 export class PrismaSignUpRepository implements ISignUpRepository {
-  constructor(private prismaClient: PrismaClient) {}
+  constructor(@inject('PrismaClient') private prismaClient: PrismaClient) {}
 
   async execute(input: SignUpRepositoryInput): Promise<SignUpRepositoryOutput> {
     const { username, email, password } = input;

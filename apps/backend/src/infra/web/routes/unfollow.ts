@@ -1,13 +1,20 @@
-import { HttpController, HttpMiddleware, HttpServerRoute } from '@infra/ports';
+import { inject, singleton } from 'tsyringe';
+import { HttpController, HttpMiddleware } from '@infra/ports';
+import { Route } from '../shared';
 
-export const buildUnfollowRoute = (
-  controller: HttpController,
-  middlewares?: HttpMiddleware[]
-): HttpServerRoute => {
-  return {
-    method: 'POST',
-    path: '/v1/profile/unfollow',
-    handler: controller,
-    middlewares,
-  };
-};
+@singleton()
+export class UnfollowRoute extends Route {
+  constructor(
+    @inject('UnfollowController')
+    controller: HttpController,
+    @inject('RequireAuthenticationMiddleware')
+    requireAuthenticationMiddleware: HttpMiddleware
+  ) {
+    super({
+      method: 'GET',
+      path: '/v1/profile/unfollow',
+      handler: controller,
+      middlewares: [requireAuthenticationMiddleware],
+    });
+  }
+}

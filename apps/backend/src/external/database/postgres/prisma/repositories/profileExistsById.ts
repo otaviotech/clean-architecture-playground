@@ -1,3 +1,4 @@
+import { inject, singleton } from 'tsyringe';
 import { PrismaClient, Profile as PrismaProfile } from '@prisma/client';
 import {
   ProfileExistsByIdRepositoryInput,
@@ -5,10 +6,11 @@ import {
   IProfileExistsByIdRepository,
 } from '@application/ports/repositories';
 
+@singleton()
 export class PrismaProfileExistsByIdRepository
   implements IProfileExistsByIdRepository
 {
-  constructor(private prismaClient: PrismaClient) {}
+  constructor(@inject('PrismaClient') private prismaClient: PrismaClient) {}
 
   async execute(
     profileIds: ProfileExistsByIdRepositoryInput

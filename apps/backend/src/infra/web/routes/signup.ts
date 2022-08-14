@@ -1,13 +1,15 @@
-import { HttpController, HttpMiddleware, HttpServerRoute } from '@infra/ports';
+import { inject, singleton } from 'tsyringe';
+import { HttpController } from '@infra/ports';
+import { Route } from '../shared';
 
-export const buildSignUpRoute = (
-  controller: HttpController,
-  middlewares: HttpMiddleware[] = []
-): HttpServerRoute => {
-  return {
-    method: 'POST',
-    path: '/v1/signup',
-    handler: controller,
-    middlewares,
-  };
-};
+@singleton()
+export class SignUpRoute extends Route {
+  constructor(@inject('SignUpController') controller: HttpController) {
+    super({
+      method: 'POST',
+      path: '/v1/signup',
+      handler: controller,
+      middlewares: [],
+    });
+  }
+}
