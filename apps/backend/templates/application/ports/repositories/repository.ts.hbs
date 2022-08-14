@@ -1,0 +1,17 @@
+import { AsyncCommand } from '@shared/protocols';
+
+export type {{pascalCase name}}RepositoryInput = {
+  foo: string;
+};
+
+export type {{pascalCase name}}RepositoryOutputBoundary = {
+  bar: string;
+};
+
+export type {{pascalCase name}}RepositoryOutput =
+  {{pascalCase name}}RepositoryOutputBoundary | null;
+
+export type I{{pascalCase name}}Repository = AsyncCommand<
+  {{pascalCase name}}RepositoryInput,
+  {{pascalCase name}}RepositoryOutput
+>;

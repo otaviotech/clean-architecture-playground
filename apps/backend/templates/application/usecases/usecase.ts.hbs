@@ -1,0 +1,52 @@
+import { left, right } from 'fp-ts/Either';
+import { inject, singleton } from 'tsyringe';
+
+{{#if includeRepository}}
+import {
+  {{pascalCase name}}RepositoryOutputBoundary,
+  I{{pascalCase name}}Repository,
+} from '@application/ports/repositories';
+{{/if}}
+import {
+  I{{pascalCase name}}UseCase,
+  {{pascalCase name}}UseCaseInput,
+  {{pascalCase name}}UseCaseOutput,
+  {{pascalCase name}}UseCaseOutputBoundary,
+} from '@application/ports/usecases';
+
+@singleton()
+export class {{pascalCase name}}UseCase
+  implements I{{pascalCase name}}UseCase
+{
+  {{#if includeRepository}}
+  constructor(
+    @inject('I{{pascalCase name}}Repository')
+    private readonly {{camelCase name}}Repository: I{{pascalCase name}}Repository
+  ) {}
+  {{/if}}
+
+  async execute(
+    input: {{pascalCase name}}UseCaseInput
+  ): Promise<{{pascalCase name}}UseCaseOutput> {
+    {{#if includeRepository}}
+    const data = await this.{{camelCase name}}Repository.execute(input);
+
+    if (!data) {
+      return left(null);
+    }
+
+    return right(this.mapResult(data));
+    {{else}}
+    return right({} as {{pascalCase name}}UseCaseOutput);
+    {{/if}}
+
+  }
+
+  {{#if includeRepository}}
+  private mapResult(
+    data: {{pascalCase name}}RepositoryOutputBoundary
+  ): {{pascalCase name}}UseCaseOutputBoundary {
+    return {};
+  }
+  {{/if}}
+}

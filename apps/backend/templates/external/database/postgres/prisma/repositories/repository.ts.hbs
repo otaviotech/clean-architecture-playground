@@ -1,0 +1,34 @@
+import { inject, singleton } from 'tsyringe';
+
+import { PrismaClient, {{pascalCase prismaEntity}} as Prisma{{pascalCase prismaEntity}} } from '@prisma/client';
+
+import {
+  {{pascalCase name}}RepositoryInput,
+  {{pascalCase name}}RepositoryOutput,
+  I{{pascalCase name}}Repository,
+} from '@application/ports/repositories';
+
+@singleton()
+export class Prisma{{pascalCase name}}Repository
+  implements I{{pascalCase name}}Repository
+{
+  constructor(@inject('PrismaClient') private prismaClient: PrismaClient) {}
+
+  async execute(
+    input: {{pascalCase name}}RepositoryInput
+  ): Promise<{{pascalCase name}}RepositoryOutput> {
+    const orm{{pascalCase prismaEntity}} = await this.prismaClient.{{camelCase prismaEntity}}.findFirst();
+
+    if (!orm{{pascalCase prismaEntity}}) {
+      return null;
+    }
+
+    return this.mapResult(orm{{pascalCase prismaEntity}});
+  }
+
+  private mapResult(
+    {{camelCase prismaEntity}}: Prisma{{pascalCase prismaEntity}}
+  ): {{pascalCase name}}RepositoryOutput {
+    return { bar: '' };
+  }
+}

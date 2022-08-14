@@ -2,6 +2,7 @@
   "name": "@cap/backend",
   "version": "0.0.0",
   "scripts": {
-    "db:migrate:dev": "prisma migrate dev --schema=./src/data/database/postgres/prisma/schema.prisma"
+    "db:migrate:dev": "prisma migrate dev --schema=./src/external/database/postgres/prisma/schema.prisma",
+    "generate": "plop"
   }
 }

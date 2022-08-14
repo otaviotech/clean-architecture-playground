@@ -52,6 +52,13 @@
       "options": {
         "script": "db:migrate:dev"
       }
+    },
+
+    "generate": {
+      "executor": "nx:run-script",
+      "options": {
+        "script": "generate"
+      }
     }
   },
   "tags": []

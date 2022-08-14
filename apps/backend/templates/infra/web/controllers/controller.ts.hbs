@@ -1,0 +1,30 @@
+import { isLeft } from 'fp-ts/Either';
+import { inject, singleton } from 'tsyringe';
+
+import { HttpController, HttpRequest, HttpResponse } from '@infra/ports';
+import {
+  buildApplicationErrorResponse,
+  buildOkResponse,
+  buildValidationFailedResponse,
+} from '@infra/web/shared';
+
+// Application
+import { I{{pascalCase name}}UseCase } from '@application/ports/usecases';
+
+@singleton()
+export class {{pascalCase name}}Controller implements HttpController {
+
+  constructor(
+    @inject('I{{pascalCase name}}UseCase') private readonly {{camelCase name}}UseCase: I{{pascalCase name}}UseCase
+  ) {}
+
+  async handle(input: HttpRequest): Promise<HttpResponse> {
+    const result = await this.{{camelCase name}}UseCase.execute(input);
+
+    if (isLeft(result)) {
+      return buildApplicationErrorResponse(result.left);
+    }
+
+    return buildOkResponse(result.right);
+  }
+}
