@@ -1,7 +1,7 @@
 import { isLeft } from 'fp-ts/Either';
 import { inject, singleton } from 'tsyringe';
 
-import { HttpController, HttpRequest, HttpResponse } from '@infra/ports';
+import { IHttpController, IHttpRequest, IHttpResponse } from '@infra/ports';
 import {
   buildApplicationErrorResponse,
   buildOkResponse,
@@ -12,13 +12,13 @@ import {
 import { I{{pascalCase name}}UseCase } from '@application/ports/usecases';
 
 @singleton()
-export class {{pascalCase name}}Controller implements HttpController {
+export class {{pascalCase name}}Controller implements IHttpController {
 
   constructor(
     @inject('I{{pascalCase name}}UseCase') private readonly {{camelCase name}}UseCase: I{{pascalCase name}}UseCase
   ) {}
 
-  async handle(input: HttpRequest): Promise<HttpResponse> {
+  async handle(input: IHttpRequest): Promise<IHttpResponse> {
     const result = await this.{{camelCase name}}UseCase.execute(input);
 
     if (isLeft(result)) {

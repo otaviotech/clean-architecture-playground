@@ -1,12 +1,12 @@
-import { HttpServerRoute } from './httpServerRoute';
+import { IHttpServerRoute } from './httpServerRoute';
 
-export interface HttpServerConfig {
+export interface IHttpServerConfig {
   port: number;
 }
 
-export interface HttpServer {
-  listen(config: HttpServerConfig): Promise<void>;
+export interface IHttpServer {
+  listen(config: IHttpServerConfig): Promise<void>;
   stop(): Promise<void>;
-  registerRoutes(routes: HttpServerRoute[]): void;
+  registerRoutes(routes: IHttpServerRoute[]): void;
   printRoutes(): void;
 }

@@ -2,7 +2,7 @@ import { isLeft } from 'fp-ts/Either';
 import { inject, singleton } from 'tsyringe';
 
 // Infra (self)
-import { HttpController, HttpRequest, HttpResponse } from '@infra/web/ports';
+import { IHttpController, IHttpRequest, IHttpResponse } from '@infra/web/ports';
 import {
   buildOkResponse,
   buildValidationFailedResponse,
@@ -14,7 +14,7 @@ import { ISignUpUseCase } from '@application/ports/usecases';
 import { SignUpInputBuilder } from '@application/usecases/signup/signupInputBuilder';
 
 @singleton()
-export class SignUpController implements HttpController {
+export class SignUpController implements IHttpController {
   private readonly inputValidator = new SignUpInputBuilder();
   private readonly presenter = new SignUpPresenter();
 
@@ -22,7 +22,7 @@ export class SignUpController implements HttpController {
     @inject('ISignUpUseCase') private readonly signUpUseCase: ISignUpUseCase
   ) {}
 
-  async handle(input: HttpRequest): Promise<HttpResponse> {
+  async handle(input: IHttpRequest): Promise<IHttpResponse> {
     const inputOrError = this.inputValidator.build(input.body as never);
 
     if (isLeft(inputOrError)) {

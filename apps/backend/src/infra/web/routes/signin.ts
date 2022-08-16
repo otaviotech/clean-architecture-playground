@@ -1,12 +1,12 @@
 import { inject, singleton } from 'tsyringe';
-import { HttpController } from '@infra/web/ports';
+import { IHttpController } from '@infra/web/ports';
 import { Route } from '@infra/web/shared';
 
 @singleton()
 export class SignInRoute extends Route {
   constructor(
     @inject('SignInController')
-    controller: HttpController
+    controller: IHttpController
   ) {
     super({
       method: 'POST',

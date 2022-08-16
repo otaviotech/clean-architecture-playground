@@ -1,8 +1,8 @@
-import { HttpResponse } from '@infra/web/ports';
+import { IHttpResponse } from '@infra/web/ports';
 
 export const buildValidationFailedResponse = (
   errors: Error[]
-): HttpResponse => ({
+): IHttpResponse => ({
   status: 400,
   body: { errors: errors.map((x) => x.message) },
 });

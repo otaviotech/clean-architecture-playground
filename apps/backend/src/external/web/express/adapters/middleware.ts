@@ -5,17 +5,17 @@ import {
   Response as ExpressResponse,
   NextFunction as ExpressNextFunction,
 } from 'express';
-import { HttpMiddleware, HttpRequest, HttpResponse } from '@infra/web/ports';
+import { IHttpMiddleware, IHttpRequest, IHttpResponse } from '@infra/web/ports';
 
 @singleton()
 export class ExpressMiddlewareAdapter {
-  adapt(middleware: HttpMiddleware) {
+  adapt(middleware: IHttpMiddleware) {
     return async (
       req: ExpressRequest,
       res: ExpressResponse,
       next: ExpressNextFunction
     ) => {
-      const httpRequest: HttpRequest = {
+      const httpRequest: IHttpRequest = {
         method: req.method,
         params: req.params,
         query: req.query,
@@ -23,7 +23,7 @@ export class ExpressMiddlewareAdapter {
         body: req.body,
       };
 
-      const httpResponse: HttpResponse = {
+      const httpResponse: IHttpResponse = {
         status: res.statusCode,
       };
 

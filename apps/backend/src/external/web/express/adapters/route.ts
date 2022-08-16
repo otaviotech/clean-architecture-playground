@@ -4,7 +4,7 @@ import {
   Response as ExpressResponse,
 } from 'express';
 
-import { HttpController, HttpRequest } from '@infra/web/ports';
+import { IHttpController, IHttpRequest } from '@infra/web/ports';
 import { ILogger } from '@infra/ports';
 
 @singleton()
@@ -12,10 +12,10 @@ export class ExpressRouteAdapter {
   constructor(@inject('ILogger') private readonly logger: ILogger) {}
 
   adapt(
-    controller: HttpController
+    controller: IHttpController
   ): (req: ExpressRequest, res: ExpressResponse) => Promise<unknown> {
     return async (req: ExpressRequest, res: ExpressResponse) => {
-      const httpRequest: HttpRequest = {
+      const httpRequest: IHttpRequest = {
         method: req.method,
         params: req.params,
         query: req.query,

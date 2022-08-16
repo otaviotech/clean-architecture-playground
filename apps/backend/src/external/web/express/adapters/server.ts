@@ -5,9 +5,9 @@ import pino from 'pino-http';
 import express, { Express } from 'express';
 
 import {
-  HttpServerRoute,
-  HttpServer,
-  HttpServerConfig,
+  IHttpServerRoute,
+  IHttpServer,
+  IHttpServerConfig,
 } from '@infra/web/ports';
 import { ILogger } from '@infra/ports';
 
@@ -15,7 +15,7 @@ import { ExpressRouteAdapter } from '@external/web/express/adapters';
 import { ExpressMiddlewareAdapter } from '@external/web/express/adapters/middleware';
 
 @singleton()
-export class ExpressServer implements HttpServer {
+export class ExpressServer implements IHttpServer {
   private server: Server;
 
   constructor(
@@ -32,14 +32,14 @@ export class ExpressServer implements HttpServer {
     private readonly middlewareAdapter: ExpressMiddlewareAdapter,
 
     @inject('APP_ROUTES')
-    private readonly routes: HttpServerRoute[]
+    private readonly routes: IHttpServerRoute[]
   ) {
     app.use(express.json());
     app.use(pino({ logger: this.logger.logger }));
     this.registerRoutes(routes);
   }
 
-  registerRoutes(routes: HttpServerRoute[]): void {
+  registerRoutes(routes: IHttpServerRoute[]): void {
     routes.forEach((route) => {
       const routeMiddlewares =
         route.middlewares?.map((middleware) =>
@@ -54,7 +54,7 @@ export class ExpressServer implements HttpServer {
     });
   }
 
-  async listen(config: HttpServerConfig): Promise<void> {
+  async listen(config: IHttpServerConfig): Promise<void> {
     return new Promise((resolve, reject) => {
       this.server = this.app
         .listen(config.port)

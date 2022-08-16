@@ -1,16 +1,16 @@
 import {
-  HttpController,
-  HttpMiddleware,
-  HttpServerRoute,
+  IHttpController,
+  IHttpMiddleware,
+  IHttpServerRoute,
 } from '@infra/web/ports';
 
-export abstract class Route implements HttpServerRoute {
+export abstract class Route implements IHttpServerRoute {
   method: 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTIONS';
   path: string;
-  handler: HttpController;
-  middlewares?: HttpMiddleware[];
+  handler: IHttpController;
+  middlewares?: IHttpMiddleware[];
 
-  constructor(config: HttpServerRoute) {
+  constructor(config: IHttpServerRoute) {
     this.method = config.method;
     this.path = config.path;
     this.handler = config.handler;

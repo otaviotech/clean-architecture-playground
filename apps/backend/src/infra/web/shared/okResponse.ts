@@ -1,6 +1,6 @@
-import { HttpResponse } from '@infra/web/ports';
+import { IHttpResponse } from '@infra/web/ports';
 
-export const buildOkResponse = (body: unknown): HttpResponse => ({
+export const buildOkResponse = (body: unknown): IHttpResponse => ({
   status: 200,
   body,
 });

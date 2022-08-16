@@ -1,6 +1,6 @@
-import { HttpRequest } from './httpRequest';
-import { HttpResponse } from './httpResponse';
+import { IHttpRequest } from './httpRequest';
+import { IHttpResponse } from './httpResponse';
 
-export interface HttpController {
-  handle(input: HttpRequest): Promise<HttpResponse>;
+export interface IHttpController {
+  handle(input: IHttpRequest): Promise<IHttpResponse>;
 }

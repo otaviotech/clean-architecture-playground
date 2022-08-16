@@ -4,21 +4,21 @@ import { inject, singleton } from 'tsyringe';
 import { IValidateAuthTokenService } from '@application/ports/services';
 import { InvalidCredentialsError } from '@application/errors';
 
-import { HttpRequest, HttpResponse, HttpMiddleware } from '@infra/web/ports';
+import { IHttpRequest, IHttpResponse, IHttpMiddleware } from '@infra/web/ports';
 import { buildUnauthorizedResponse } from '@infra/web/shared';
 
 @singleton()
-export class RequireAuthenticationMiddleware implements HttpMiddleware {
+export class RequireAuthenticationMiddleware implements IHttpMiddleware {
   constructor(
     @inject('IValidateAuthTokenService')
     private readonly validateAuthTokenService: IValidateAuthTokenService
   ) {}
 
   async use(
-    req: HttpRequest,
-    res: HttpResponse,
+    req: IHttpRequest,
+    res: IHttpResponse,
     next: () => void
-  ): Promise<Either<HttpResponse, void>> {
+  ): Promise<Either<IHttpResponse, void>> {
     const authToken = this.extractAuthToken(req);
     const tokenIsValid = await this.validateAuthTokenService.execute(authToken);
 
@@ -35,7 +35,7 @@ export class RequireAuthenticationMiddleware implements HttpMiddleware {
     return right(undefined);
   }
 
-  private extractAuthToken(req: HttpRequest): string {
+  private extractAuthToken(req: IHttpRequest): string {
     return req.headers.authorization?.split(' ')?.[1] ?? '';
   }
 }

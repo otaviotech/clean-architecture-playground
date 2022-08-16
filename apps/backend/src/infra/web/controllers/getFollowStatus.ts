@@ -2,7 +2,7 @@ import { isLeft } from 'fp-ts/Either';
 import { inject, singleton } from 'tsyringe';
 
 // Infra (self)
-import { HttpController, HttpRequest, HttpResponse } from '@infra/web/ports';
+import { IHttpController, IHttpRequest, IHttpResponse } from '@infra/web/ports';
 import {
   buildApplicationErrorResponse,
   buildOkResponse,
@@ -15,7 +15,7 @@ import { IGetFollowStatusUseCase } from '@application/ports/usecases';
 import { GetFollowStatusInputBuilder } from '@application/usecases';
 
 @singleton()
-export class GetFollowStatusController implements HttpController {
+export class GetFollowStatusController implements IHttpController {
   private readonly inputValidator = new GetFollowStatusInputBuilder();
   private readonly presenter = new GetFollowStatusPresenter();
 
@@ -24,7 +24,7 @@ export class GetFollowStatusController implements HttpController {
     private readonly getFollowStatusUseCase: IGetFollowStatusUseCase
   ) {}
 
-  async handle(input: HttpRequest): Promise<HttpResponse> {
+  async handle(input: IHttpRequest): Promise<IHttpResponse> {
     const inputOrError = this.inputValidator.build(input.query as never);
 
     if (isLeft(inputOrError)) {

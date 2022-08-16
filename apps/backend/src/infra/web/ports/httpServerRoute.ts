@@ -1,8 +1,8 @@
-import { HttpController, HttpMiddleware } from '@infra/web/ports';
+import { IHttpController, IHttpMiddleware } from '@infra/web/ports';
 
-export interface HttpServerRoute {
+export interface IHttpServerRoute {
   method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTIONS';
   path: string;
-  handler: HttpController;
-  middlewares?: HttpMiddleware[];
+  handler: IHttpController;
+  middlewares?: IHttpMiddleware[];
 }

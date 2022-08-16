@@ -1,10 +1,10 @@
 import { Either } from 'fp-ts/lib/Either';
-import { HttpRequest, HttpResponse } from '@infra/web/ports';
+import { IHttpRequest, IHttpResponse } from '@infra/web/ports';
 
-export interface HttpMiddleware {
+export interface IHttpMiddleware {
   use(
-    req: HttpRequest,
-    res: HttpResponse,
+    req: IHttpRequest,
+    res: IHttpResponse,
     next: () => void
-  ): Promise<Either<HttpResponse, void>>;
+  ): Promise<Either<IHttpResponse, void>>;
 }

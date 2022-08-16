@@ -1,6 +1,6 @@
 import { IncomingHttpHeaders } from 'http';
 
-export interface HttpRequest {
+export interface IHttpRequest {
   method: string;
   params: { [key: string]: string };
   headers: IncomingHttpHeaders;

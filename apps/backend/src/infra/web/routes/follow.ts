@@ -1,14 +1,14 @@
 import { inject, singleton } from 'tsyringe';
-import { HttpController, HttpMiddleware } from '@infra/web/ports';
+import { IHttpController, IHttpMiddleware } from '@infra/web/ports';
 import { Route } from '../shared';
 
 @singleton()
 export class FollowRoute extends Route {
   constructor(
     @inject('FollowController')
-    controller: HttpController,
+    controller: IHttpController,
     @inject('RequireAuthenticationMiddleware')
-    requireAuthenticationMiddleware: HttpMiddleware
+    requireAuthenticationMiddleware: IHttpMiddleware
   ) {
     super({
       method: 'POST',
