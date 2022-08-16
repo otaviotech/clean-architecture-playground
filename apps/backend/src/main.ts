@@ -2,7 +2,7 @@ import 'reflect-metadata';
 
 import { appContainer } from './main/ioc/container';
 
-import { HttpServer } from './infra/ports';
+import { HttpServer } from '@infra/web/ports';
 
 const server = appContainer.resolve<HttpServer>('ExpressServer');
 

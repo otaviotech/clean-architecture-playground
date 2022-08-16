@@ -1,4 +1,4 @@
-import { HttpResponse } from '@infra/ports';
+import { HttpResponse } from '@infra/web/ports';
 
 export const buildApplicationErrorResponse = (error: Error): HttpResponse => ({
   status: 400,

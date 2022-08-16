@@ -6,7 +6,10 @@ import {
   JwtAuthTokenValidator,
 } from '@external/authentication/jwt';
 import { DotenvConfigRepository } from '@external/config/dotenv/repositories/config';
-import { BcryptPasswordHashComparer } from '@external/cryptography';
+import {
+  BcryptHasher,
+  BcryptPasswordHashComparer,
+} from '@external/cryptography';
 import {
   PrismaFindProfileByUsernameRepository,
   PrismaFollowRepository,
@@ -67,7 +70,7 @@ container.register('IConfigRepository', { useClass: DotenvConfigRepository });
 
 // External.Cryptography
 container.register('IHashComparer', { useClass: BcryptPasswordHashComparer });
-container.register('IHasher', { useClass: BcryptPasswordHashComparer });
+container.register('IHasher', { useClass: BcryptHasher });
 
 // External.Database.Postgres.Prisma.Repositories
 container.register('IFindProfileByUsernameRepository', {

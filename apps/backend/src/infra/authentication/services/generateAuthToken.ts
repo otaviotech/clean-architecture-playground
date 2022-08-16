@@ -1,3 +1,4 @@
+import { inject, singleton } from 'tsyringe';
 import {
   GenerateAuthTokenServiceInput,
   IGenerateAuthTokenService,
@@ -5,7 +6,6 @@ import {
 
 import { IAuthTokenGenerator } from '@infra/authentication/ports';
 import { IConfigManager } from '@infra/config/ports';
-import { inject, singleton } from 'tsyringe';
 
 @singleton()
 export class GenerateAuthTokenService implements IGenerateAuthTokenService {

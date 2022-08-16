@@ -1,5 +1,5 @@
 import { inject, singleton } from 'tsyringe';
-import { HttpController, HttpMiddleware } from '@infra/ports';
+import { HttpController, HttpMiddleware } from '@infra/web/ports';
 import { Route } from '../shared';
 
 @singleton()

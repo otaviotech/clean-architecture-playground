@@ -1,16 +1,18 @@
+import { inject, singleton } from 'tsyringe';
 import Table from 'cli-table';
 import { Server } from 'http';
 import pino from 'pino-http';
 import express, { Express } from 'express';
+
 import {
   HttpServerRoute,
   HttpServer,
   HttpServerConfig,
-  ILogger,
-} from '@infra/ports';
+} from '@infra/web/ports';
+import { ILogger } from '@infra/ports';
+
 import { ExpressRouteAdapter } from '@external/web/express/adapters';
-import { ExpressMiddlewareAdapter } from './middleware';
-import { inject, singleton } from 'tsyringe';
+import { ExpressMiddlewareAdapter } from '@external/web/express/adapters/middleware';
 
 @singleton()
 export class ExpressServer implements HttpServer {

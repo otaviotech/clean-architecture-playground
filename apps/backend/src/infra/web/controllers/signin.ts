@@ -2,12 +2,12 @@ import { isLeft } from 'fp-ts/Either';
 import { inject, singleton } from 'tsyringe';
 
 // Infra (self)
-import { HttpController, HttpRequest, HttpResponse } from '@infra/ports';
+import { HttpController, HttpRequest, HttpResponse } from '@infra/web/ports';
 import { buildOkResponse, buildUnauthorizedResponse } from '@infra/web/shared';
 
 // Application
 import { ISignInUseCase } from '@application/ports/usecases';
-import { SignInPresenter } from '../presenters';
+import { SignInPresenter } from '@infra/web/presenters';
 
 @singleton()
 export class SignInController implements HttpController {

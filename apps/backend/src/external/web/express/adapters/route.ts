@@ -1,10 +1,11 @@
+import { inject, singleton } from 'tsyringe';
 import {
   Request as ExpressRequest,
   Response as ExpressResponse,
 } from 'express';
 
-import { HttpController, HttpRequest, ILogger } from '@infra/ports';
-import { inject, singleton } from 'tsyringe';
+import { HttpController, HttpRequest } from '@infra/web/ports';
+import { ILogger } from '@infra/ports';
 
 @singleton()
 export class ExpressRouteAdapter {

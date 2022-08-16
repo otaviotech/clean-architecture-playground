@@ -1,6 +1,6 @@
 import { inject, singleton } from 'tsyringe';
-import { HttpController } from '@infra/ports';
-import { Route } from '../shared';
+import { HttpController } from '@infra/web/ports';
+import { Route } from '@infra/web/shared';
 
 @singleton()
 export class SignInRoute extends Route {

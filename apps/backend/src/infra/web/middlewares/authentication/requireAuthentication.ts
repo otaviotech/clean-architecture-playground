@@ -4,7 +4,7 @@ import { inject, singleton } from 'tsyringe';
 import { IValidateAuthTokenService } from '@application/ports/services';
 import { InvalidCredentialsError } from '@application/errors';
 
-import { HttpRequest, HttpResponse, HttpMiddleware } from '@infra/ports';
+import { HttpRequest, HttpResponse, HttpMiddleware } from '@infra/web/ports';
 import { buildUnauthorizedResponse } from '@infra/web/shared';
 
 @singleton()

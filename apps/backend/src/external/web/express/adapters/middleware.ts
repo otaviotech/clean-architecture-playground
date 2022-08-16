@@ -1,11 +1,11 @@
 import { isLeft } from 'fp-ts/lib/Either';
+import { singleton } from 'tsyringe';
 import {
   Request as ExpressRequest,
   Response as ExpressResponse,
   NextFunction as ExpressNextFunction,
 } from 'express';
-import { HttpMiddleware, HttpRequest, HttpResponse } from '@infra/ports';
-import { singleton } from 'tsyringe';
+import { HttpMiddleware, HttpRequest, HttpResponse } from '@infra/web/ports';
 
 @singleton()
 export class ExpressMiddlewareAdapter {

@@ -1,6 +1,6 @@
 import { inject, singleton } from 'tsyringe';
-import { HttpController, HttpMiddleware } from '@infra/ports';
-import { Route } from '../shared';
+import { HttpController, HttpMiddleware } from '@infra/web/ports';
+import { Route } from '@infra/web/shared';
 
 @singleton()
 export class GetFollowStatusRoute extends Route {

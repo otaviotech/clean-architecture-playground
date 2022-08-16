@@ -1,6 +1,9 @@
+import { singleton } from 'tsyringe';
 import dotenv from 'dotenv';
+
 import { IConfigRepository } from '@infra/config/ports/configRepository';
 
+@singleton()
 export class DotenvConfigRepository implements IConfigRepository {
   private env: { [key: string]: string };
 

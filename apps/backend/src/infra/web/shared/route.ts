@@ -1,4 +1,8 @@
-import { HttpController, HttpMiddleware, HttpServerRoute } from '@infra/ports';
+import {
+  HttpController,
+  HttpMiddleware,
+  HttpServerRoute,
+} from '@infra/web/ports';
 
 export abstract class Route implements HttpServerRoute {
   method: 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH' | 'OPTIONS';

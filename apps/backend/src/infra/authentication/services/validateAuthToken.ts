@@ -1,5 +1,7 @@
 import { inject, singleton } from 'tsyringe';
+
 import { IValidateAuthTokenService } from '@application/ports/services';
+
 import { IAuthTokenValidator } from '@infra/authentication/ports';
 import { IConfigManager } from '@infra/config/ports';
 

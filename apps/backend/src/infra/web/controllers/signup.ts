@@ -2,7 +2,7 @@ import { isLeft } from 'fp-ts/Either';
 import { inject, singleton } from 'tsyringe';
 
 // Infra (self)
-import { HttpController, HttpRequest, HttpResponse } from '@infra/ports';
+import { HttpController, HttpRequest, HttpResponse } from '@infra/web/ports';
 import {
   buildOkResponse,
   buildValidationFailedResponse,
