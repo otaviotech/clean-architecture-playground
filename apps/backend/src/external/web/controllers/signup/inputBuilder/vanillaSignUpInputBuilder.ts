@@ -1,8 +1,13 @@
 import { Either, left, right } from 'fp-ts/Either';
+import { singleton } from 'tsyringe';
+
 import { InputBuilder } from '@shared/protocols/inputBuilder';
 import { SignUpUseCaseInput } from '@application/ports/usecases';
 
-export class SignUpInputBuilder implements InputBuilder<SignUpUseCaseInput> {
+@singleton()
+export class VanillaSignUpInputBuilder
+  implements InputBuilder<SignUpUseCaseInput>
+{
   build(data: SignUpUseCaseInput): Either<Error[], SignUpUseCaseInput> {
     const { username, email, password } = data ?? {};
 

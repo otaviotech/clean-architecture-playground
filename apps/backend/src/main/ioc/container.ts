@@ -19,6 +19,8 @@ import {
   PrismaUnfollowRepository,
 } from '@external/database/postgres/prisma/repositories';
 import { PinoLogger } from '@external/logger/pino/adapters';
+import { VanillaFollowInputBuilder } from '@external/web/controllers/follow/inputBuilder';
+import { VanillaSignUpInputBuilder } from '@external/web/controllers/signup/inputBuilder';
 import { ExpressMiddlewareAdapter } from '@external/web/express/adapters/middleware';
 import {
   ExpressRouteAdapter,
@@ -119,11 +121,17 @@ container.register('IHashPasswordService', { useClass: HashPasswordService });
 
 // Infra.Web.Controllers
 container.register('FollowController', { useClass: FollowController });
+container.register('IFollowInputBuilder', {
+  useClass: VanillaFollowInputBuilder,
+});
 container.register('GetFollowStatusController', {
   useClass: GetFollowStatusController,
 });
 container.register('SignInController', { useClass: SignInController });
 container.register('SignUpController', { useClass: SignUpController });
+container.register('ISignUpInputBuilder', {
+  useClass: VanillaSignUpInputBuilder,
+});
 container.register('UnfollowController', { useClass: UnfollowController });
 
 // Infra.Web.Middlewares.Authentication

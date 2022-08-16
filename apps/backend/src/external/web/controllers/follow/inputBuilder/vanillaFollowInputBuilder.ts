@@ -1,8 +1,13 @@
 import { Either, left, right } from 'fp-ts/Either';
+import { singleton } from 'tsyringe';
+
 import { InputBuilder } from '@shared/protocols/inputBuilder';
 import { FollowUseCaseInput } from '@application/ports/usecases';
 
-export class FollowInputBuilder implements InputBuilder<FollowUseCaseInput> {
+@singleton()
+export class VanillaFollowInputBuilder
+  implements InputBuilder<FollowUseCaseInput>
+{
   build(data: FollowUseCaseInput): Either<Error[], FollowUseCaseInput> {
     const { followedId, followerId } = data ?? {};
 

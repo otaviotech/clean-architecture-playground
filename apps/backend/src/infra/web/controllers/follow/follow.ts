@@ -5,8 +5,10 @@ import { inject, singleton } from 'tsyringe';
 import { IHttpController, IHttpRequest, IHttpResponse } from '@infra/web/ports';
 
 // Application
-import { IFollowUseCase } from '@application/ports/usecases';
-import { FollowInputBuilder } from '@application/usecases/follow/followInputBuilder';
+import {
+  FollowUseCaseInput,
+  IFollowUseCase,
+} from '@application/ports/usecases';
 
 // Infra
 import {
@@ -14,17 +16,18 @@ import {
   buildOkResponse,
   buildValidationFailedResponse,
 } from '@infra/web/shared';
+import { InputBuilder } from '@shared/protocols';
 
 @singleton()
 export class FollowController implements IHttpController {
-  private readonly inputValidator = new FollowInputBuilder();
-
   constructor(
-    @inject('IFollowUseCase') private readonly followUseCase: IFollowUseCase
+    @inject('IFollowUseCase') private readonly followUseCase: IFollowUseCase,
+    @inject('IFollowInputBuilder')
+    private readonly inputBuilder: InputBuilder<FollowUseCaseInput>
   ) {}
 
   async handle(input: IHttpRequest): Promise<IHttpResponse> {
-    const inputOrError = this.inputValidator.build(input.query as never);
+    const inputOrError = this.inputBuilder.build(input.query);
 
     if (isLeft(inputOrError)) {
       return buildValidationFailedResponse(inputOrError.left);

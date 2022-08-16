@@ -10,20 +10,25 @@ import {
 import { SignUpPresenter } from '@infra/web/presenters/signup';
 
 // Application
-import { ISignUpUseCase } from '@application/ports/usecases';
-import { SignUpInputBuilder } from '@application/usecases/signup/signupInputBuilder';
+import {
+  ISignUpUseCase,
+  SignUpUseCaseInput,
+} from '@application/ports/usecases';
+import { InputBuilder } from '@shared/protocols';
 
 @singleton()
 export class SignUpController implements IHttpController {
-  private readonly inputValidator = new SignUpInputBuilder();
   private readonly presenter = new SignUpPresenter();
 
   constructor(
-    @inject('ISignUpUseCase') private readonly signUpUseCase: ISignUpUseCase
+    @inject('ISignUpUseCase')
+    private readonly signUpUseCase: ISignUpUseCase,
+    @inject('ISignUpInputBuilder')
+    private readonly inputBuilder: InputBuilder<SignUpUseCaseInput>
   ) {}
 
   async handle(input: IHttpRequest): Promise<IHttpResponse> {
-    const inputOrError = this.inputValidator.build(input.body as never);
+    const inputOrError = this.inputBuilder.build(input.body as never);
 
     if (isLeft(inputOrError)) {
       return buildValidationFailedResponse(inputOrError.left);
