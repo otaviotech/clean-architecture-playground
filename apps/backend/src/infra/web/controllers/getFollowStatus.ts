@@ -3,29 +3,40 @@ import { inject, singleton } from 'tsyringe';
 
 // Infra (self)
 import { IHttpController, IHttpRequest, IHttpResponse } from '@infra/web/ports';
+import { Presenter } from '@infra/ports';
 import {
   buildApplicationErrorResponse,
   buildOkResponse,
   buildValidationFailedResponse,
 } from '@infra/web/shared';
-import { GetFollowStatusPresenter } from '@infra/web/presenters/getFollowStatus';
+import { GetFollowStatusView } from '@infra/web/presenters/getFollowStatus';
 
 // Application
-import { IGetFollowStatusUseCase } from '@application/ports/usecases';
-import { GetFollowStatusInputBuilder } from '@application/usecases';
+import {
+  GetFollowStatusUseCaseInput,
+  GetFollowStatusUseCaseOutputBoundary,
+  IGetFollowStatusUseCase,
+} from '@application/ports/usecases';
+
+// Shared
+import { InputBuilder } from '@shared/protocols';
 
 @singleton()
 export class GetFollowStatusController implements IHttpController {
-  private readonly inputValidator = new GetFollowStatusInputBuilder();
-  private readonly presenter = new GetFollowStatusPresenter();
-
   constructor(
     @inject('IGetFollowStatusUseCase')
-    private readonly getFollowStatusUseCase: IGetFollowStatusUseCase
+    private readonly getFollowStatusUseCase: IGetFollowStatusUseCase,
+    @inject('IGetFollowStatusInputBuilder')
+    private readonly inputBuilder: InputBuilder<GetFollowStatusUseCaseInput>,
+    @inject('IGetFollowStatusPresenter')
+    private readonly presenter: Presenter<
+      GetFollowStatusUseCaseOutputBoundary,
+      GetFollowStatusView
+    >
   ) {}
 
   async handle(input: IHttpRequest): Promise<IHttpResponse> {
-    const inputOrError = this.inputValidator.build(input.query as never);
+    const inputOrError = this.inputBuilder.build(input.query as never);
 
     if (isLeft(inputOrError)) {
       return buildValidationFailedResponse(inputOrError.left);

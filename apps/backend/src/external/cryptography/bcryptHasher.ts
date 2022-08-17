@@ -1,7 +1,7 @@
 import { singleton } from 'tsyringe';
 import bcrypt from 'bcrypt';
 
-import { IHasher } from '@infra/ports/hasher';
+import { IHasher } from '@infra/cryptography/ports';
 
 @singleton()
 export class BcryptHasher implements IHasher {

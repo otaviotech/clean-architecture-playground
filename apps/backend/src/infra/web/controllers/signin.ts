@@ -3,27 +3,43 @@ import { inject, singleton } from 'tsyringe';
 
 // Infra (self)
 import { IHttpController, IHttpRequest, IHttpResponse } from '@infra/web/ports';
-import { buildOkResponse, buildUnauthorizedResponse } from '@infra/web/shared';
+import {
+  buildOkResponse,
+  buildUnauthorizedResponse,
+  buildValidationFailedResponse,
+} from '@infra/web/shared';
+import { SignInView } from '@infra/web/presenters';
+import { Presenter } from '@infra/ports';
 
 // Application
-import { ISignInUseCase } from '@application/ports/usecases';
-import { SignInPresenter } from '@infra/web/presenters';
+import {
+  ISignInUseCase,
+  SignInUseCaseInput,
+  SignInUseCaseOutputBoundary,
+} from '@application/ports/usecases';
+import { InputBuilder } from '../../../shared/protocols';
 
 @singleton()
 export class SignInController implements IHttpController {
-  private presenter = new SignInPresenter();
-
   constructor(
-    @inject('ISignInUseCase') private readonly signUpUseCase: ISignInUseCase
+    @inject('ISignInUseCase') private readonly signUpUseCase: ISignInUseCase,
+    @inject('ISignInInputBuilder')
+    private readonly inputBuilder: InputBuilder<SignInUseCaseInput>,
+    @inject('ISignInPresenter')
+    private readonly presenter: Presenter<
+      SignInUseCaseOutputBoundary,
+      SignInView
+    >
   ) {}
 
   async handle(input: IHttpRequest): Promise<IHttpResponse> {
-    const { username, password } = (input.body as never) ?? {};
+    const ucInput = this.inputBuilder.build(input.body);
 
-    const result = await this.signUpUseCase.execute({
-      username,
-      password,
-    });
+    if (isLeft(ucInput)) {
+      return buildValidationFailedResponse(ucInput.left);
+    }
+
+    const result = await this.signUpUseCase.execute(ucInput.right);
 
     if (isLeft(result)) {
       return buildUnauthorizedResponse([result.left]);

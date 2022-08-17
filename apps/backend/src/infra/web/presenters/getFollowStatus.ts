@@ -1,4 +1,7 @@
+import { singleton } from 'tsyringe';
+
 import { GetFollowStatusUseCaseOutputBoundary } from '@application/ports/usecases';
+
 import { Presenter } from '@infra/ports';
 
 export type GetFollowStatusView = {
@@ -6,6 +9,7 @@ export type GetFollowStatusView = {
   isFollowed: boolean;
 };
 
+@singleton()
 export class GetFollowStatusPresenter
   implements
     Presenter<GetFollowStatusUseCaseOutputBoundary, GetFollowStatusView>

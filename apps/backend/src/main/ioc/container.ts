@@ -1,6 +1,8 @@
 import express from 'express';
-import { PrismaClient } from '@prisma/client';
 import { container } from 'tsyringe';
+import { PrismaClient } from '@prisma/client';
+
+// External
 import {
   JwtAuthTokenGenerator,
   JwtAuthTokenValidator,
@@ -18,24 +20,38 @@ import {
   PrismaSignUpRepository,
   PrismaUnfollowRepository,
 } from '@external/database/postgres/prisma/repositories';
+
 import { PinoLogger } from '@external/logger/pino/adapters';
+
+// External web input builders
 import { VanillaFollowInputBuilder } from '@external/web/controllers/follow/inputBuilder';
+import { VanillaGetFollowStatusInputBuilder } from '@external/web/controllers/getFollowStatus/inputBuilder';
+import { VanillaSignInInputBuilder } from '@external/web/controllers/signin/inputBuilder';
 import { VanillaSignUpInputBuilder } from '@external/web/controllers/signup/inputBuilder';
+
+// External web adapters
 import { ExpressMiddlewareAdapter } from '@external/web/express/adapters/middleware';
 import {
   ExpressRouteAdapter,
   ExpressServer,
 } from '@external/web/express/adapters';
+
+// Infra services
 import {
   GenerateAuthTokenService,
   ValidateAuthTokenService,
 } from '@infra/authentication/services';
+
+// Infra config
 import { AppConfigManager } from '@infra/config/configManager';
+
+// Infra crypto
 import {
   ComparePasswordHashService,
   HashPasswordService,
 } from '@infra/cryptography';
 
+// Controllers
 import {
   FollowController,
   GetFollowStatusController,
@@ -43,7 +59,17 @@ import {
   SignUpController,
   UnfollowController,
 } from '@infra/web/controllers';
+
+// Presenters
+import {
+  SignInPresenter,
+  GetFollowStatusPresenter,
+} from '@infra/web/presenters';
+
+// Middlewares
 import { RequireAuthenticationMiddleware } from '@infra/web/middlewares/authentication';
+
+// Routes
 import {
   FollowRoute,
   GetFollowStatusRoute,
@@ -127,7 +153,17 @@ container.register('IFollowInputBuilder', {
 container.register('GetFollowStatusController', {
   useClass: GetFollowStatusController,
 });
+container.register('IGetFollowStatusInputBuilder', {
+  useClass: VanillaGetFollowStatusInputBuilder,
+});
+container.register('IGetFollowStatusPresenter', {
+  useClass: GetFollowStatusPresenter,
+});
 container.register('SignInController', { useClass: SignInController });
+container.register('ISignInInputBuilder', {
+  useClass: VanillaSignInInputBuilder,
+});
+container.register('ISignInPresenter', { useClass: SignInPresenter });
 container.register('SignUpController', { useClass: SignUpController });
 container.register('ISignUpInputBuilder', {
   useClass: VanillaSignUpInputBuilder,

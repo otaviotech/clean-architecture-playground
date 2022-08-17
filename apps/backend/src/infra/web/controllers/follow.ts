@@ -21,7 +21,8 @@ import { InputBuilder } from '@shared/protocols';
 @singleton()
 export class FollowController implements IHttpController {
   constructor(
-    @inject('IFollowUseCase') private readonly followUseCase: IFollowUseCase,
+    @inject('IFollowUseCase')
+    private readonly followUseCase: IFollowUseCase,
     @inject('IFollowInputBuilder')
     private readonly inputBuilder: InputBuilder<FollowUseCaseInput>
   ) {}
@@ -39,6 +40,6 @@ export class FollowController implements IHttpController {
       return buildApplicationErrorResponse(result.left);
     }
 
-    return buildOkResponse(result.right);
+    return buildOkResponse({});
   }
 }
