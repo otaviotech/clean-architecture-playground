@@ -47,6 +47,24 @@
       }
     },
 
+    "test-unit": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/backend"],
+      "options": {
+        "jestConfig": "apps/backend/jest.config.unit.ts",
+        "passWithNoTests": true
+      }
+    },
+
+    "test-integration": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/backend"],
+      "options": {
+        "jestConfig": "apps/backend/jest.config.integration.ts",
+        "passWithNoTests": true
+      }
+    },
+
     "db-migrate-dev": {
       "executor": "nx:run-script",
       "options": {

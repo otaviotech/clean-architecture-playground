@@ -6,7 +6,7 @@ export default {
       tsconfig: '<rootDir>/tsconfig.spec.json',
     },
   },
-  testEnvironment: 'node',
+  testEnvironment: './test/environments/prisma.ts',
   transform: {
     '^.+\\.[tj]s$': 'ts-jest',
   },
