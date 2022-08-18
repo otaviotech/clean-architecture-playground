@@ -4,7 +4,7 @@ import { appContainer } from './main/ioc/container';
 
 import { IHttpServer } from '@infra/web/ports';
 
-const server = appContainer.resolve<IHttpServer>('ExpressServer');
+const server = appContainer.resolve<IHttpServer>('IHttpServer');
 
 server.listen({ port: 3000 });
 

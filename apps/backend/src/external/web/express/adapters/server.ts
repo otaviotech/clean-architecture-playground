@@ -35,7 +35,13 @@ export class ExpressServer implements IHttpServer {
     private readonly routes: IHttpServerRoute[]
   ) {
     app.use(express.json());
-    app.use(pino({ logger: this.logger.logger }));
+
+    const isTestEnvironment = process.env.NODE_ENV === 'test';
+
+    if (!isTestEnvironment) {
+      app.use(pino({ logger: this.logger.logger }));
+    }
+
     this.registerRoutes(routes);
   }
 
@@ -56,10 +62,8 @@ export class ExpressServer implements IHttpServer {
 
   async listen(config: IHttpServerConfig): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.server = this.app
-        .listen(config.port)
-        .on('listening', resolve)
-        .on('error', reject);
+      this.server = this.app.listen(config.port);
+      this.server.on('listening', resolve).on('error', reject);
     });
   }
 
@@ -85,5 +89,9 @@ export class ExpressServer implements IHttpServer {
     });
 
     this.logger.info(table.toString());
+  }
+
+  public getServer(): Server {
+    return this.server;
   }
 }

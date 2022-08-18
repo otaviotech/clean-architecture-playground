@@ -4,7 +4,7 @@ import { inject, singleton } from 'tsyringe';
 // Infra (self)
 import { IHttpController, IHttpRequest, IHttpResponse } from '@infra/web/ports';
 import {
-  buildOkResponse,
+  buildCreatedResponse,
   buildValidationFailedResponse,
 } from '@infra/web/shared';
 import { SignUpPresenter } from '@infra/web/presenters/signup';
@@ -40,6 +40,6 @@ export class SignUpController implements IHttpController {
       return buildValidationFailedResponse([result.left]);
     }
 
-    return buildOkResponse(this.presenter.render(result.right));
+    return buildCreatedResponse(this.presenter.render(result.right));
   }
 }

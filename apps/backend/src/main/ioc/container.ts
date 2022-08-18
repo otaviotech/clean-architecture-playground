@@ -124,7 +124,7 @@ container.register('ExpressMiddlewareAdapter', {
   useClass: ExpressMiddlewareAdapter,
 });
 container.register('ExpressRouteAdapter', { useClass: ExpressRouteAdapter });
-container.register('ExpressServer', { useClass: ExpressServer });
+container.register('IHttpServer', { useClass: ExpressServer });
 
 // Infra
 
