@@ -8,13 +8,15 @@ export class FollowRoute extends Route {
     @inject('FollowController')
     controller: IHttpController,
     @inject('RequireAuthenticationMiddleware')
-    requireAuthenticationMiddleware: IHttpMiddleware
+    requireAuthenticationMiddleware: IHttpMiddleware,
+    @inject('InjectAuthMetaMiddleware')
+    injectAuthMetaMiddleware: IHttpMiddleware
   ) {
     super({
       method: 'POST',
       path: '/v1/profile/follow',
       handler: controller,
-      middlewares: [requireAuthenticationMiddleware],
+      middlewares: [requireAuthenticationMiddleware, injectAuthMetaMiddleware],
     });
   }
 }

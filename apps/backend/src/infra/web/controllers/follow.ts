@@ -28,6 +28,10 @@ export class FollowController implements IHttpController {
   ) {}
 
   async handle(input: IHttpRequest): Promise<IHttpResponse> {
+    console.log('\n\n\n\n');
+    console.log({ meta: input.meta });
+    console.log('\n\n\n\n');
+
     const inputOrError = this.inputBuilder.build(input.query);
 
     if (isLeft(inputOrError)) {

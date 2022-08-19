@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client';
 
 // External
 import {
+  JwtAuthTokenDecoder,
   JwtAuthTokenGenerator,
   JwtAuthTokenValidator,
 } from '@external/authentication/jwt';
@@ -67,7 +68,10 @@ import {
 } from '@infra/web/presenters';
 
 // Middlewares
-import { RequireAuthenticationMiddleware } from '@infra/web/middlewares/authentication';
+import {
+  InjectAuthMetaMiddleware,
+  RequireAuthenticationMiddleware,
+} from '@infra/web/middlewares/authentication';
 
 // Routes
 import {
@@ -90,6 +94,7 @@ import {
 container.register('PrismaClient', { useValue: new PrismaClient() });
 
 // External.Authentication
+container.register('IAuthTokenDecoder', { useClass: JwtAuthTokenDecoder });
 container.register('IAuthTokenGenerator', { useClass: JwtAuthTokenGenerator });
 container.register('IAuthTokenValidator', { useClass: JwtAuthTokenValidator });
 
@@ -173,6 +178,9 @@ container.register('UnfollowController', { useClass: UnfollowController });
 // Infra.Web.Middlewares.Authentication
 container.register('RequireAuthenticationMiddleware', {
   useClass: RequireAuthenticationMiddleware,
+});
+container.register('InjectAuthMetaMiddleware', {
+  useClass: InjectAuthMetaMiddleware,
 });
 
 container.register('FollowRoute', { useClass: FollowRoute });
